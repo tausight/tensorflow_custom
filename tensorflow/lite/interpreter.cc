@@ -86,7 +86,7 @@ TfLiteQuantization GetQuantizationFromLegacy(
 
 }  // namespace
 
-Interpreter::Interpreter(const HMODULE& flex_dll, ErrorReporter* error_reporter)
+Interpreter::Interpreter(const HMODULE flex_dll, ErrorReporter* error_reporter)
     : flex_dll_(flex_dll), error_reporter_(error_reporter ? error_reporter
                                      : DefaultErrorReporter()) {
   // TODO(b/128420794): Include the TFLite runtime version in the log.

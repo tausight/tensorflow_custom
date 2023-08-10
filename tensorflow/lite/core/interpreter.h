@@ -117,7 +117,7 @@ class Interpreter {
   // used. Ownership of 'error_reporter' remains with the caller.
   // WARNING: Use of this constructor outside of an InterpreterBuilder is not
   // recommended.
-Interpreter(const HMODULE& flex_dll, ErrorReporter* error_reporter = DefaultErrorReporter());
+Interpreter(const HMODULE flex_dll, ErrorReporter* error_reporter = DefaultErrorReporter());
 
   ~Interpreter();
 
@@ -740,7 +740,7 @@ Interpreter(const HMODULE& flex_dll, ErrorReporter* error_reporter = DefaultErro
   ErrorReporter* error_reporter() const { return error_reporter_; }
 
  private:
-  const HMODULE& flex_dll_;
+  HMODULE const flex_dll_;
   friend class InterpreterBuilder;
   friend class tflite::InterpreterTest;
   friend class tflite::delegates::InterpreterUtils;

@@ -159,7 +159,7 @@ constexpr const char* kEmptyTensorName = "";
 // delegate simply by adding it as a dependency.
 // For flex delegate, see also the strong override in
 // lite/delegates/flex/delegate.cc.
-TFLITE_ATTRIBUTE_WEAK Interpreter::TfLiteDelegatePtr AcquireFlexDelegate(const HMODULE& flex_dll) {
+TFLITE_ATTRIBUTE_WEAK Interpreter::TfLiteDelegatePtr AcquireFlexDelegate(const HMODULE flex_dll) {
   // TF_AcquireFlexDelegate isn't defined on Android, and the following block of
   // code would have no effect if TF_AcquireFlexDelegate isn't defined, so we
   // only enable that block for non-Android platforms.  Also, on Android 4.4
