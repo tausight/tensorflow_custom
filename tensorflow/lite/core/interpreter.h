@@ -23,7 +23,9 @@ limitations under the License.
 
 // IWYU pragma: private, include "third_party/tensorflow/lite/interpreter.h"
 // IWYU pragma: friend third_party/tensorflow/lite/interpreter.h
-
+#include <windows.h>
+#undef max
+#undef min
 #include <stddef.h>
 #include <stdint.h>
 
@@ -115,7 +117,7 @@ class Interpreter {
   // used. Ownership of 'error_reporter' remains with the caller.
   // WARNING: Use of this constructor outside of an InterpreterBuilder is not
   // recommended.
-Interpreter(const std::wstring& flex_dll_path_, ErrorReporter* error_reporter = DefaultErrorReporter());
+Interpreter(const HMODULE& flex_dll, ErrorReporter* error_reporter = DefaultErrorReporter());
 
   ~Interpreter();
 
@@ -738,7 +740,7 @@ Interpreter(const std::wstring& flex_dll_path_, ErrorReporter* error_reporter = 
   ErrorReporter* error_reporter() const { return error_reporter_; }
 
  private:
-  const std::wstring flex_dll_path_;
+  const HMODULE& flex_dll_;
   friend class InterpreterBuilder;
   friend class tflite::InterpreterTest;
   friend class tflite::delegates::InterpreterUtils;
