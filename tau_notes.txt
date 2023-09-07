@@ -1,0 +1,3 @@
+For debug build to succeed, after running bazel, need to remove /DEBUG:FULL from @bazel-out/x64_windows-dbg/bin/tensorflow/lite/delegates/flex/tensorflowlite_flex.dll-2.params and replace with /DEBUG:NONE
+
+then manually run: "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\HostX64\x64\link.exe" @bazel-out/x64_windows-dbg/bin/tensorflow/lite/delegates/flex/tensorflowlite_flex.dll-2.params
