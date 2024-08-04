@@ -38,6 +38,9 @@ class SharedLibrary {
   }
   // Warning: Unlike dlsym(RTLD_DEFAULT), it doesn't search the symbol from
   // dependent DLLs.
+  static inline void* GetSymbol2(const HMODULE handle, const char* symbol) {
+    return reinterpret_cast<void*>(GetProcAddress(handle, symbol));
+  }
   static inline void* GetSymbol(const char* symbol) {
     return reinterpret_cast<void*>(GetProcAddress(nullptr, symbol));
   }

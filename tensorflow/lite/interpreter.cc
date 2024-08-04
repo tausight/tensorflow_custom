@@ -14,7 +14,6 @@ limitations under the License.
 ==============================================================================*/
 
 #include "tensorflow/lite/core/interpreter.h"
-
 #include <stddef.h>
 #include <stdlib.h>
 
@@ -87,8 +86,8 @@ TfLiteQuantization GetQuantizationFromLegacy(
 
 }  // namespace
 
-Interpreter::Interpreter(ErrorReporter* error_reporter)
-    : error_reporter_(error_reporter ? error_reporter
+Interpreter::Interpreter(const HMODULE flex_dll, ErrorReporter* error_reporter)
+    : flex_dll_(flex_dll), error_reporter_(error_reporter ? error_reporter
                                      : DefaultErrorReporter()) {
   // TODO(b/128420794): Include the TFLite runtime version in the log.
   // Prod logging is useful for mobile platforms where scraping console logs is

@@ -159,7 +159,7 @@ constexpr const char* kEmptyTensorName = "";
 // delegate simply by adding it as a dependency.
 // For flex delegate, see also the strong override in
 // lite/delegates/flex/delegate.cc.
-TFLITE_ATTRIBUTE_WEAK Interpreter::TfLiteDelegatePtr AcquireFlexDelegate() {
+TFLITE_ATTRIBUTE_WEAK Interpreter::TfLiteDelegatePtr AcquireFlexDelegate(const HMODULE flex_dll) {
   // TF_AcquireFlexDelegate isn't defined on Android, and the following block of
   // code would have no effect if TF_AcquireFlexDelegate isn't defined, so we
   // only enable that block for non-Android platforms.  Also, on Android 4.4
@@ -170,7 +170,7 @@ TFLITE_ATTRIBUTE_WEAK Interpreter::TfLiteDelegatePtr AcquireFlexDelegate() {
 #if !defined(__ANDROID__)
   auto acquire_flex_delegate_func =
       reinterpret_cast<Interpreter::TfLiteDelegatePtr (*)()>(
-          SharedLibrary::GetSymbol("TF_AcquireFlexDelegate"));
+          SharedLibrary::GetSymbol2(flex_dll, "TF_AcquireFlexDelegate"));
   if (acquire_flex_delegate_func) {
     return acquire_flex_delegate_func();
   }
@@ -670,7 +670,7 @@ TfLiteStatus InterpreterBuilder::ParseTensors(
 TfLiteStatus InterpreterBuilder::ApplyDelegates(Interpreter* interpreter) {
   // Apply Flex delegate if applicable.
   if (has_flex_op_) {
-    if (Interpreter::TfLiteDelegatePtr flex_delegate = AcquireFlexDelegate()) {
+    if (Interpreter::TfLiteDelegatePtr flex_delegate = AcquireFlexDelegate(interpreter->flex_dll_)) {
       TF_LITE_ENSURE_STATUS(interpreter->ModifyGraphWithDelegateImpl(
           // Transfers ownership of flex_delegate to the interpreter.
           std::move(flex_delegate)));
@@ -756,7 +756,7 @@ TfLiteStatus InterpreterBuilder::operator()(
     return cleanup_and_error();
   }
 
-  *interpreter = std::make_unique<Interpreter>(error_reporter_);
+  *interpreter = std::make_unique<Interpreter>((*interpreter)->flex_dll_, error_reporter_);
   if (subgraphs->size() > 1) {
     (*interpreter)->AddSubgraphs(subgraphs->size() - 1);
   }
